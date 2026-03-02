@@ -1,4 +1,4 @@
-// Unedited base game functions that should be changed in order to properly load your character.
+// 一些改了才能正確地載入你的角色的原遊戲函數。
 
 define MISC.player1.character		= u16[0xffffff08] // 和 global.characters 一模一樣，只是為了一致性改了名
 define MISC.player2.character		= u16[0xffffff0c] // 用來判斷玩家2的角色（*在客製化玩家2的插件中使用*）
@@ -8,21 +8,20 @@ global u8 CHARACTER_CUSTOM = 0
 
 // 在這個腳本裏，會用多種方式來檢查使用的角色。
 // 請記住當中會有些函數來自原版遊戲，和使用原版遊戲的輸入值。
-//however, generally... if the helper function uses "character", it accounts for your character as both p1 AND p2.
-// 不過，在大多數情況下...如果一個輔助函數 (helper function) 的輸入值使用 "character"，
+// 不過，在大多數情況下...如果一個輔助函數 (helper function) 的輸入值使用 "character"，不管你的角色是玩家一還是玩家二它會顧及到。
 //if the helper function uses "MISC.player1.character", and vice versa for p2, it's only for that player GLOBALLY.
 //if the helper function uses "slotnum" or something else, it's using the character while MISC.player1.character is not set.
 
-//check for your character by using slotnum == CHARACTER_CUSTOM (or whatever your character is defined as!)
-function bool MISC.SetCharAsValid(u8 slotnum) //Determine what values are valid
+// 用 slotnum == CHARACTER_CUSTOM（或你定義的角色全域變數）來檢查你的角色！
+function bool MISC.SetCharAsValid(u8 slotnum) // 檢查哪些數值是有效的
 {
 	bool base = base.MISC.SetCharAsValid(slotnum)
-	//Manual slot checking
-	if slotnum == CHARACTER_CUSTOM //set this to your char number
+    // 手動檢查卡槽
+	if slotnum == CHARACTER_CUSTOM // 把這設為你的角色編號
 		return true
-	else if base //bases the function, checks for lower slots
+	else if base // 調用函數的父類別（base），檢查較低的卡槽
 		return true
-	else //return false if none of these are true
+	else // 如果以上的都不是true就回傳false
 		return false
 }
 
